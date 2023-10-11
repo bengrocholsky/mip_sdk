@@ -332,6 +332,7 @@ enum mip_cmd_result mip_interface_run_command(mip_interface* device, uint8_t des
   for(size_t i=0;i<cmd_length;i++)
     printf("%02x",cmd_data[i]);
   printf("\n");
+  fflush(0);
   return mip_interface_run_command_with_response(device, descriptor_set, cmd_descriptor, cmd_data, cmd_length, MIP_INVALID_FIELD_DESCRIPTOR, NULL, NULL);
 }
 
@@ -355,6 +356,11 @@ enum mip_cmd_result mip_interface_run_command_with_response(mip_interface* devic
     mip_packet_add_field(&packet, cmd_descriptor, cmd_data, cmd_length);
     mip_packet_finalize(&packet);
 
+    printf("mip_interface_run_command_with_response:  packet_length %d\npacket_data=",packet._buffer_length);
+    for(size_t i=0;i<packet._buffer_length;i++)
+      printf("%02x",packet._buffer[i]);
+    printf("\n");
+
     mip_pending_cmd cmd;
     const uint8_t response_length = response_length_inout ? *response_length_inout : 0;
     mip_pending_cmd_init_with_response(&cmd, descriptor_set, cmd_descriptor, response_descriptor, response_buffer, response_length);
@@ -363,6 +369,12 @@ enum mip_cmd_result mip_interface_run_command_with_response(mip_interface* devic
 
     if( response_length_inout )
         *response_length_inout = mip_pending_cmd_response_length(&cmd);
+
+    printf("response_length %d\nresponse_data=",response_length);
+    for(size_t i=0;i<response_length;i++)
+      printf("%02x",response_buffer[i]);
+    printf("\n");
+    fflush(0);  
 
     return result;
 }
