@@ -141,6 +141,10 @@ bool serial_port_open(serial_port *port, const char *port_str, int baudrate)
     serial_port_settings.c_cflag = (serial_port_settings.c_cflag & (tcflag_t)~(CSIZE|CSTOPB|INPCK|ISTRIP|PARENB|PARODD)) | CS8;
     serial_port_settings.c_iflag &= (tcflag_t) ~(IXON | IXOFF | IXANY);
 
+    // something is wrong with this termios config --> getting too may timeouts/errors
+    serial_port_settings.c_cc[VTIME] = 1;  // timeout after .1s that isn't working
+    serial_port_settings.c_cc[VMIN] = 0;  // want to read a min chunk?
+    
     // Persist the settings
     if(tcsetattr(port->handle, TCSANOW, &serial_port_settings) < 0)
         return false;
