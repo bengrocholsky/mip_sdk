@@ -97,7 +97,7 @@ int main(int argc, const char* argv[])
         return 1;
     }
 
-  
+#if 1
   offset[0] = -0.0132;
   offset[1] = 0.0091;
   offset[2] = -0.0154;
@@ -150,7 +150,7 @@ int main(int argc, const char* argv[])
         fprintf(stderr, "Error: %s\n", ex.what());
         return 1;
     }
-  
+#endif
   
   try
     {

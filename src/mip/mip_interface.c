@@ -328,7 +328,11 @@ enum mip_cmd_result mip_interface_wait_for_reply(mip_interface* device, const mi
 ///
 enum mip_cmd_result mip_interface_run_command(mip_interface* device, uint8_t descriptor_set, uint8_t cmd_descriptor, const uint8_t* cmd_data, uint8_t cmd_length)
 {
-    return mip_interface_run_command_with_response(device, descriptor_set, cmd_descriptor, cmd_data, cmd_length, MIP_INVALID_FIELD_DESCRIPTOR, NULL, NULL);
+  printf("mip_interface_run_command:  descriptor_set 0x%02x, cmd_descriptor 0x%02x cmd_length %d\ncmd_data=",descriptor_set,cmd_descriptor,cmd_length);
+  for(size_t i=0;i<cmd_length;i++)
+    printf("%02x",cmd_data[i]);
+  printf("\n");
+  return mip_interface_run_command_with_response(device, descriptor_set, cmd_descriptor, cmd_data, cmd_length, MIP_INVALID_FIELD_DESCRIPTOR, NULL, NULL);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
