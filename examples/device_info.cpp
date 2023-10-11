@@ -40,13 +40,15 @@ int main(int argc, const char* argv[])
 
 	//
 	//Load the device default settings (so the device is in a known state)
-	//	
-	if(mip::commands_3dm::defaultDeviceSettings(*device) != mip::CmdResult::ACK_OK)
+	//
+	// does this overwite CAL values?
+	/*
+	  if(mip::commands_3dm::defaultDeviceSettings(*device) != mip::CmdResult::ACK_OK)
 	  {
 	    printf("ERROR: Could not load default device settings!");
 	    exit(0);
 	  }
-	
+	*/
     }
   catch(const std::exception& ex)
     {
@@ -95,7 +97,7 @@ int main(int argc, const char* argv[])
         return 1;
     }
 
-  /*
+  
   offset[0] = -0.0132;
   offset[1] = 0.0091;
   offset[2] = -0.0154;
@@ -148,7 +150,7 @@ int main(int argc, const char* argv[])
         fprintf(stderr, "Error: %s\n", ex.what());
         return 1;
     }
-  */
+  
   
   try
     {
@@ -191,6 +193,12 @@ int main(int argc, const char* argv[])
     {
         fprintf(stderr, "Error: %s\n", ex.what());
         return 1;
+    }
+  
+  if(mip::commands_base::resume(*device) != mip::CmdResult::ACK_OK)
+    {
+      printf("ERROR: Could not set the device to resume from idle!");
+      exit(0);
     }
 
     return 0;
